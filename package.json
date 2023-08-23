@@ -1,6 +1,6 @@
 {
   "name": "qwik-buttery-toast",
-  "version": "0.1",
+  "version": "0.0.1",
   "description": "A simple and customizable toast notification library for Qwik.",
   "engines": {
     "node": ">=15.0.0"
@@ -22,5 +22,19 @@
   },
   "dependencies": {
     "goober": "^2.1.13"
-  }
+  },
+  "main": "./src/index.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AchalS-iglu/qwik-buttery-toast.git"
+  },
+  "author": "achals",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/AchalS-iglu/qwik-buttery-toast/issues"
+  },
+  "homepage": "https://github.com/AchalS-iglu/qwik-buttery-toast#readme"
 }
