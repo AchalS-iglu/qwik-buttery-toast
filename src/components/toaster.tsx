@@ -7,54 +7,35 @@ import {
 import { useToaster } from '../core/use-toaster';
 import { prefersReducedMotion } from '../core/utils';
 import { ToastBar } from './toast-bar';
-import { CSSProperties, createElement, component$ } from '@builder.io/qwik';
+import { CSSProperties, createElement, component$, h, Component } from '@builder.io/qwik';
 
 setup(createElement);
 
-const ToastWrapper = component$(({
-  id,
-  style,
-  class,
-  onHeightUpdate,
-  children,
-}: ToastWrapperProps) => {
-//   const ref = 
-//     (el: HTMLElement | null) => {
-//       if (el) {
-//         const updateHeight = () => {
-//           const height = el.getBoundingClientRect().height;
-//           onHeightUpdate(id, height);
-//         };
-//         updateHeight();
-//         new MutationObserver(updateHeight).observe(el, {
-//           subtree: true,
-//           childList: true,
-//           characterData: true,
-//         });
-//       }
-    //     }
+export const ToasterWrapper: Component<ToastWrapperProps> = ({ children, onHeightUpdate, id, className, style }) => {
+  const handleRef = (el: HTMLElement | null) => {
+    if (el) {
+      const updateHeight = () => {
+        const height = el.getBoundingClientRect().height;
+        onHeightUpdate(id, height);
+      };
+      updateHeight();
+      new MutationObserver(updateHeight).observe(el, {
+        subtree: true,
+        childList: true,
+        characterData: true,
+      });
+    }
+  };
+
+  const childElements = children && Array.isArray(children) ? children.filter((child) => typeof child !== "string") : [];
 
   return (
-      <div ref={
-          (el: Element | null) => {
-                if (el) {
-                    const updateHeight = () => {
-                        const height = el.getBoundingClientRect().height;
-                        onHeightUpdate(id, height);
-                    };
-                    updateHeight();
-                    new MutationObserver(updateHeight).observe(el, {
-                        subtree: true,
-                        childList: true,
-                        characterData: true,
-                    });
-                }
-            }
-      } class={class} style={style}>
-        {children}
+    // @ts-ignore
+    <div ref={handleRef} className={className} style={style}>
+      {childElements}
     </div>
   );
-})
+};
 
 const getPositionStyle = (
   position: ToastPosition,

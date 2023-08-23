@@ -86,7 +86,7 @@ export interface ToasterProps {
 
 export interface ToastWrapperProps {
   id: string;
-  class?: string;
+  className?: string;
   style?: CSSProperties;
   onHeightUpdate: (id: string, height: number) => void;
   children?: JSX.Element | string;
