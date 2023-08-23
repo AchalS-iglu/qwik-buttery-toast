@@ -1,4 +1,5 @@
-import { CSSProperties } from "@builder.io/qwik";
+import {type  CSSProperties } from "@builder.io/qwik";
+import type { JSX } from '@builder.io/qwik/jsx-runtime';
 
 export type ToastType = 'success' | 'error' | 'loading' | 'blank' | 'custom';
 export type ToastPosition =
@@ -9,27 +10,27 @@ export type ToastPosition =
   | 'bottom-center'
   | 'bottom-right';
 
-export type Renderable = Element | string | null;
+export type Renderable = JSX.Element | string | undefined;
 
 export interface IconTheme {
   primary: string;
   secondary: string;
 }
 
-export type ValueFunction<TValue, TArg> = (arg: TArg) => TValue;
-export type ValueOrFunction<TValue, TArg> =
-  | TValue
-  | ValueFunction<TValue, TArg>;
+// export type ValueFunction<TValue, TArg> = (arg: TArg) => TValue;
+// export type ValueOrFunction<TValue, TArg> =
+//   | TValue
+//   | ValueFunction<TValue, TArg>;
 
-const isFunction = <TValue, TArg>(
-  valOrFunction: ValueOrFunction<TValue, TArg>
-): valOrFunction is ValueFunction<TValue, TArg> =>
-  typeof valOrFunction === 'function';
+// const isFunction = <TValue, TArg>(
+//   valOrFunction: ValueOrFunction<TValue, TArg>
+// ): valOrFunction is ValueFunction<TValue, TArg> =>
+//   typeof valOrFunction === 'function';
 
-export const resolveValue = <TValue, TArg>(
-  valOrFunction: ValueOrFunction<TValue, TArg>,
-  arg: TArg
-): TValue => (isFunction(valOrFunction) ? valOrFunction(arg) : valOrFunction);
+// export const resolveValue = <TValue, TArg>(
+//   valOrFunction: ValueOrFunction<TValue, TArg>,
+//   arg: TArg
+// ): TValue => (isFunction(valOrFunction) ? valOrFunction(arg) : valOrFunction);
 
 export interface Toast {
   type: ToastType;
@@ -80,13 +81,13 @@ export interface ToasterProps {
   gutter?: number;
   containerStyle?: CSSProperties;
   containerClassName?: string;
-  children?: (toast: Toast) => Element;
+  children?: (toast: Toast) => JSX.Element;
 }
 
 export interface ToastWrapperProps {
   id: string;
-  className?: string;
+  class?: string;
   style?: CSSProperties;
   onHeightUpdate: (id: string, height: number) => void;
-  children?: Element;
+  children?: JSX.Element | string;
 }

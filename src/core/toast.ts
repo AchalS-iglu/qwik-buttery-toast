@@ -1,5 +1,5 @@
 import { ActionType, dispatch } from "./store";
-import { resolveValue, type DefaultToastOptions, type Renderable, type Toast, type ToastOptions, type ToastType } from "./types";
+import { type DefaultToastOptions, type Renderable, type Toast, type ToastOptions, type ToastType } from "./types";
 import { genId } from "./utils";
 
 type Message = Renderable;
@@ -63,15 +63,15 @@ const id = toast.loading(msgs.loading, { ...opts, ...opts?.loading });
 
 promise
     .then((p) => {
-    toast.success(resolveValue(msgs.success, p), {
+    toast.success(msgs.success, {
         id,
         ...opts,
         ...opts?.success,
     });
     return p;
     })
-    .catch((e) => {
-    toast.error(resolveValue(msgs.error, e), {
+    .catch(() => {
+    toast.error(msgs.error, {
         id,
         ...opts,
         ...opts?.error,
