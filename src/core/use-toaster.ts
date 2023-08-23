@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import { $, useTask$ } from '@builder.io/qwik';
 import { dispatch, ActionType, useStore } from './store';
 import { toast } from './toast';
@@ -110,3 +111,5 @@ export const useToaster = (toastOptions?: DefaultToastOptions) => {
     },
   };
 };
+=======
+>>>>>>> 616b96e (cleanup, removed everthing)
