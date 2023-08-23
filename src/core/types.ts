@@ -1,5 +1,5 @@
 import type { JSX } from "@builder.io/qwik/jsx-runtime";
-import type { CSSProperties } from "@builder.io/qwik";
+import type { CSSProperties, QRL } from "@builder.io/qwik";
 
 export type ToastType = "success" | "error" | "loading" | "blank" | "custom";
 export type ToastPosition =
@@ -10,13 +10,7 @@ export type ToastPosition =
     | "top-center"
     | "bottom-center";
 
-export type Renderable =
-    | JSX.Element
-    | string
-    | number
-    | boolean
-    | undefined
-    | Renderable[];
+export type Renderable = JSX.Element | string | undefined;
 
 export interface IconTheme {
     primary: string;
@@ -77,6 +71,6 @@ export interface ToastWrapperProps {
     id: string;
     className?: string;
     style?: CSSProperties;
-    onHeightUpdate: (id: string, height: number) => void;
-    children?: Element;
+    onHeightUpdate: QRL<(id: string, height: number) => void>;
+    children?: Renderable;
 }
