@@ -1,4 +1,4 @@
-import { useComputed$, useResource$, useTask$ } from '@builder.io/qwik';
+import { useTask$ } from '@builder.io/qwik';
 import { dispatch, ActionType, useStore } from './store';
 import { toast } from './toast';
 import type { DefaultToastOptions, Toast, ToastPosition } from './types';
@@ -66,21 +66,13 @@ export const useToaster = (toastOptions?: DefaultToastOptions) => {
         )
     })    
 
-//   const endPause = useCallback(() => {
-//     if (pausedAt) {
-//       dispatch({ type: ActionType.END_PAUSE, time: Date.now() });
-//     }
-//   }, [pausedAt]);
-    
-    const endPause = useResource$(({ track }) => {
-        if (pausedAt) {
-            track(pausedAt)
-            if (pausedAt) dispatch({ type: ActionType.END_PAUSE, time: Date.now() })
-        }
-    })
+  const endPause = () => {
+    if (pausedAt) {
+      dispatch({ type: ActionType.END_PAUSE, time: Date.now() });
+    }
+  };
 
-  const calculateOffset = useCallback(
-    (
+  const calculateOffset = (
       toast: Toast,
       opts?: {
         reverseOrder?: boolean;
@@ -106,9 +98,7 @@ export const useToaster = (toastOptions?: DefaultToastOptions) => {
         .reduce((acc, t) => acc + (t.height || 0) + gutter, 0);
 
       return offset;
-    },
-    [toasts]
-  );
+    }
 
   return {
     toasts,
