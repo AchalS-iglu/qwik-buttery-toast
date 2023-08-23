@@ -7,13 +7,13 @@ import {
 import { useToaster } from '../core/use-toaster';
 import { prefersReducedMotion } from '../core/utils';
 import { ToastBar } from './toast-bar';
-import { CSSProperties, createElement, component$, h, Component } from '@builder.io/qwik';
+import { CSSProperties, createElement, component$, h, Component, $ } from '@builder.io/qwik';
 
 setup(createElement);
 
 export const ToasterWrapper: Component<ToastWrapperProps> = ({ children, onHeightUpdate, id, className, style }) => {
   const handleRef = (el: HTMLElement | null) => {
-    if (el) {
+    if (el && el.getBoundingClientRect) {
       const updateHeight = () => {
         const height = el.getBoundingClientRect().height;
         onHeightUpdate(id, height);
@@ -112,21 +112,36 @@ export const Toaster = component$<ToasterProps>(({
         const positionStyle = getPositionStyle(toastPosition, offset);
 
         return (
-          <ToastWrapper
+          <ToasterWrapper
             id={t.id}
             key={t.id}
             onHeightUpdate={handlers.updateHeight}
-            class={t.visible ? activeClass : ''}
+            className={t.visible ? activeClass : ''}
             style={positionStyle}
           >
-            {t.type === 'custom' ? (
+            <ToastBar toast={{
+              id: "1",
+              type: "success",
+              message: "Hello World",
+              position: "top-center",
+              visible: true,
+              duration: 5000,
+              pauseDuration: 0,
+              ariaProps: {
+                'aria-live': 'polite',
+                role: 'alert',
+              },
+              createdAt: 0,
+
+            }} position={toastPosition} />
+            {/* {t.type === 'custom' ? (
               t.message
             ) : children ? (
               await Promise.resolve(children(t))
             ) : (
               <ToastBar toast={t} position={toastPosition} />
-            )}
-          </ToastWrapper>
+            )} */}
+          </ToasterWrapper>
         );
       })}
     </div>

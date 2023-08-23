@@ -1,4 +1,4 @@
-import { useTask$ } from '@builder.io/qwik';
+import { $, useTask$ } from '@builder.io/qwik';
 import { dispatch, ActionType, useStore } from './store';
 import { toast } from './toast';
 import type { DefaultToastOptions, Toast, ToastPosition } from './types';
@@ -6,18 +6,18 @@ import type { DefaultToastOptions, Toast, ToastPosition } from './types';
 const updateHeight = (toastId: string, height: number) => {
   dispatch({
     type: ActionType.UPDATE_TOAST,
-    toast: { id: toastId, height },
+    toast: {  id: toastId, height },
   });
 };
-const startPause = () => {
+const startPause = $(() => {
   dispatch({
     type: ActionType.START_PAUSE,
     time: Date.now(),
   });
-};
+})
 
 export const useToaster = (toastOptions?: DefaultToastOptions) => {
-  const { toasts, pausedAt } = useStore(toastOptions);
+  const { toasts, pausedAt, listeners } = useStore(toastOptions);
 
 //   useEffect(() => {
 //     if (pausedAt) {
@@ -48,7 +48,7 @@ export const useToaster = (toastOptions?: DefaultToastOptions) => {
 //   }, [toasts, pausedAt]);
     
     useTask$(({ track, cleanup }) => {
-        track(toasts)
+        listeners.forEach(listener => track(listener))
         if (pausedAt) track(pausedAt)
         const now = Date.now()
         const timeouts = toasts.map(t => {
@@ -66,11 +66,11 @@ export const useToaster = (toastOptions?: DefaultToastOptions) => {
         )
     })    
 
-  const endPause = () => {
+  const endPause = $(() => {
     if (pausedAt) {
       dispatch({ type: ActionType.END_PAUSE, time: Date.now() });
     }
-  };
+  })
 
   const calculateOffset = (
       toast: Toast,

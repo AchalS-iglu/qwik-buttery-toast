@@ -44,7 +44,7 @@ export type IconThemes = Partial<{
   loading: LoaderTheme;
 }>;
 
-export const ToastIcon = component$ <{toast: Toast}>(({ toast }) => {
+export const ToastIcon = component$<{toast: Toast}>(({ toast }) => {
   const { icon, type, iconTheme } = toast;
   if (icon) {
     if (typeof icon === 'string') {

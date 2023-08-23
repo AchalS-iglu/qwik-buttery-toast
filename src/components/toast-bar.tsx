@@ -1,5 +1,5 @@
 
-import { type Toast, type ToastPosition, resolveValue, type Renderable } from '../core/types';
+import { type Toast, type ToastPosition, type Renderable } from '../core/types';
 import { ToastIcon } from './toast-icon';
 import { prefersReducedMotion } from '../core/utils';
 import { keyframes, styled } from 'goober';
@@ -81,7 +81,7 @@ export const ToastBar =
     const icon = <ToastIcon toast={toast} />;
     const message = (
       <Message {...toast.ariaProps}>
-        {resolveValue(toast.message, toast)}
+        {toast.message}
       </Message>
     );
 

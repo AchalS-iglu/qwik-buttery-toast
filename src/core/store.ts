@@ -46,7 +46,8 @@ type Action =
     
     interface State {
   toasts: Toast[];
-  pausedAt: number | undefined;
+      pausedAt: number | undefined;
+      listeners: Array<Signal<State>>;
 }
 
 const toastTimeouts = new Map<Toast['id'], ReturnType<typeof setTimeout>>();
@@ -160,7 +161,7 @@ export const reducer = (state: State, action: Action): State => {
 
 
 const listeners: Array<Signal<State>> = [];
-let memoryState: State = { toasts: [], pausedAt: undefined };
+let memoryState: State = { toasts: [], pausedAt: undefined, listeners: [] };
 
 export const dispatch = (action: Action) => {
   memoryState = reducer(memoryState, action);
@@ -184,7 +185,7 @@ export const useStore = (
 ): State => {
     const signal = useSignal<State>(memoryState);
     useTask$(({ track, cleanup }) => {
-      track(() => signal.value);
+      track(signal);
       if (isServer) {
         return
       }
@@ -216,5 +217,6 @@ export const useStore = (
   return {
     ...signal.value,
     toasts: mergedToasts,
+    listeners: listeners
   }
 }
