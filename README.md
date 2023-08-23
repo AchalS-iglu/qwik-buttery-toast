@@ -1,65 +1,139 @@
-# Qwik City App ⚡️
+# Qwik Buttery Toaster
 
-- [Qwik Docs](https://qwik.builder.io/)
-- [Discord](https://qwik.builder.io/chat)
-- [Qwik GitHub](https://github.com/BuilderIO/qwik)
-- [@QwikDev](https://twitter.com/QwikDev)
-- [Vite](https://vitejs.dev/)
+A simple and customizable toast notification library for Qwik.
 
----
+## Installation
 
-## Project Structure
+You can install the `qwik-buttery-toaster` package using npm or Yarn:
 
-This project is using Qwik with [QwikCity](https://qwik.builder.io/qwikcity/overview/). QwikCity is just an extra set of tools on top of Qwik to make it easier to build a full site, including directory-based routing, layouts, and more.
-
-Inside your project, you'll see the following directory structure:
-
-```
-├── public/
-│   └── ...
-└── src/
-    ├── components/
-    │   └── ...
-    └── routes/
-        └── ...
+```bash
+npm install qwik-buttery-toaster
 ```
 
-- `src/routes`: Provides the directory-based routing, which can include a hierarchy of `layout.tsx` layout files, and an `index.tsx` file as the page. Additionally, `index.ts` files are endpoints. Please see the [routing docs](https://qwik.builder.io/qwikcity/routing/overview/) for more info.
-
-- `src/components`: Recommended directory for components.
-
-- `public`: Any static assets, like images, can be placed in the public directory. Please see the [Vite public directory](https://vitejs.dev/guide/assets.html#the-public-directory) for more info.
-
-## Add Integrations and deployment
-
-Use the `yarn qwik add` command to add additional integrations. Some examples of integrations includes: Cloudflare, Netlify or Express Server, and the [Static Site Generator (SSG)](https://qwik.builder.io/qwikcity/guides/static-site-generation/).
-
-```shell
-yarn qwik add # or `yarn qwik add`
+```bash
+yarn add qwik-buttery-toaster
 ```
 
-## Development
+## Usage
 
-Development mode uses [Vite's development server](https://vitejs.dev/). The `dev` command will server-side render (SSR) the output during development.
+To use the `qwik-buttery-toaster` package, you need to import the `Toaster` component and render it in your Qwik app.
 
-```shell
-npm start # or `yarn start`
+Here's an example of how you can use the `Toaster` component:
+
+```typescript
+import { h, Component } from "@builder.io/qwik";
+import { Toaster } from "qwik-buttery-toaster";
+
+interface Props {}
+
+export const App: Component<Props> = () => {
+  return (
+    <div>
+      <h1>Hello, world!</h1>
+      <Toaster />
+    </div>
+  );
+};
 ```
 
-> Note: during dev mode, Vite may request a significant number of `.js` files. This does not represent a Qwik production build.
+In this example, we import the `Toaster` component from the `qwik-buttery-toaster` package and render it in our Qwik app.
 
-## Preview
+You can customize the `Toaster` component by passing props to it. Here's an example of how you can customize the `Toaster` component:
 
-The preview command will create a production build of the client modules, a production build of `src/entry.preview.tsx`, and run a local server. The preview server is only for convenience to preview a production build locally and should not be used as a production server.
+```typescript
+import { h, Component } from "@builder.io/qwik";
+import { Toaster } from "qwik-buttery-toaster";
 
-```shell
-yarn preview # or `yarn preview`
+interface Props {}
+
+export const App: Component<Props> = () => {
+  return (
+    <div>
+      <h1>Hello, world!</h1>
+      <Toaster
+        position="bottom-right"
+        toastOptions={{
+          duration: 5000,
+          pauseOnHover: true,
+        }}
+      />
+    </div>
+  );
+};
 ```
 
-## Production
+In this example, we pass the `position` and `toastOptions` props to the `Toaster` component to customize its position and toast options.
 
-The production build will generate client and server modules by running both client and server build commands. The build command will use Typescript to run a type check on the source code.
+## API
 
-```shell
-yarn build # or `yarn build`
+### `Toaster`
+
+The `Toaster` component is the main component of the `qwik-buttery-toaster` package. It renders toast notifications in your Qwik app.
+
+#### Props
+
+- `position?: string`: The position of the toast notifications. Defaults to `"top-center"`.
+- `toastOptions?: ToastOptions`: The options for the toast notifications. See the `ToastOptions` type for more information.
+- `gutter?: number`: The space between toast notifications. Defaults to `8`.
+- `containerStyle?: Record<string, string>`: The style for the container element of the toast notifications.
+- `containerClassName?: string`: The class name for the container element of the toast notifications.
+
+### `useToaster`
+
+The `useToaster` hook is a helper hook that provides the `toasts` and `handlers` objects for the `Toaster` component.
+
+#### Usage
+
+```typescript
+import { useToaster } from "qwik-buttery-toaster";
+
+const { toasts, handlers } = useToaster();
 ```
+
+#### Returns
+
+- `toasts: Toast[]`: An array of toast objects.
+- `handlers: ToastHandlers`: An object containing methods for handling toast notifications.
+
+### `Toast`
+
+The `Toast` type is an interface that defines the shape of a toast object.
+
+#### Properties
+
+- `id: string`: The unique ID of the toast.
+- `type?: string`: The type of the toast. Defaults to `"default"`.
+- `message: string | Element`: The message of the toast.
+- `position?: string`: The position of the toast. Defaults to the `position` prop of the `Toaster` component.
+- `duration?: number`: The duration of the toast in milliseconds. Defaults to `3000`.
+- `visible?: boolean`: Whether the toast is visible. Defaults to `false`.
+- `className?: string`: The class name of the toast.
+- `style?: React.CSSProperties`: The style of the toast.
+
+### `ToastOptions`
+
+The `ToastOptions` type is an interface that defines the options for toast notifications.
+
+#### Properties
+
+- `duration?: number`: The duration of the toast in milliseconds. Defaults to `3000`.
+- `pauseOnHover?: boolean`: Whether to pause the duration of the toast when the mouse is over it. Defaults to `false`.
+- `reverseOrder?: boolean`: Whether to reverse the order of the toast notifications. Defaults to `false`.
+- `position?: string`: The position of the toast notifications. Defaults to `"top-center"`.
+
+### `ToastHandlers`
+
+The `ToastHandlers` type is an interface that defines the methods for handling toast notifications.
+
+#### Methods
+
+- `addToast(toast: Toast)`: Adds a toast notification to the `toasts` array.
+- `removeToast(id: string)`: Removes a toast notification from the `toasts` array.
+- `startPause()`: Starts pausing the duration of the toast notifications.
+- `endPause()`: Ends pausing the duration of the toast notifications.
+- `calculateOffset(toast: Toast, options: ToastOptions)`: Calculates the offset of a toast notification.
+- `updateHeight(id: string, height: number)`: Updates the height of a toast notification.
+
+## License
+
+The `qwik-buttery-toaster` package is open source software licensed under the MIT License.
