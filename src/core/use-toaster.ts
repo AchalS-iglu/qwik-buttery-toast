@@ -1,4 +1,4 @@
-import { useTask$ } from "@builder.io/qwik";
+import { $, useTask$ } from "@builder.io/qwik";
 import { ActionType, dispatch, useToastStore } from "./store";
 import type { DefaultToastOptions, Toast, ToastPosition } from "./types";
 import { toast } from "./toast";
@@ -9,12 +9,12 @@ const updateHeight = (toastId: string, height: number) => {
         toast: { id: toastId, height },
     });
 };
-const startPause = () => {
+const startPause = $(() => {
     dispatch({
         type: ActionType.START_PAUSE,
         time: Date.now(),
     });
-};
+});
 
 export const useToaster = (toastOptions?: DefaultToastOptions) => {
     const state = useToastStore(toastOptions);
@@ -48,14 +48,14 @@ export const useToaster = (toastOptions?: DefaultToastOptions) => {
         });
     });
 
-    const endPause = () => {
+    const endPause = $(() => {
         if (state.pausedAt) {
             dispatch({
                 type: ActionType.END_PAUSE,
                 time: Date.now(),
             });
         }
-    };
+    });
 
     const calculateOffset = (
         toast: Toast,

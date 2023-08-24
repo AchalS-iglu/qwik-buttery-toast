@@ -188,8 +188,10 @@ let memoryState: State = {
 export const dispatch = (action: Action) => {
     memoryState = reducer(memoryState, action);
     listeners.forEach((listener) => {
-        listener.toasts = memoryState.toasts;
-        listener.pausedAt = memoryState.pausedAt;
+        useTask$(() => {
+            listener.toasts = memoryState.toasts;
+            listener.pausedAt = memoryState.pausedAt;
+        });
     });
 };
 
@@ -229,7 +231,7 @@ export const useToastStore = (
         duration:
             t.duration ||
             toastOptions[t.type]?.duration ||
-            toastOptions?.duration ||
+            toastOptions.duration ||
             defaultTimeouts[t.type],
         style: {
             ...toastOptions.style,
